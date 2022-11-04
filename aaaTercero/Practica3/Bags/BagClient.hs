@@ -9,7 +9,10 @@
 module BagClient where
 
 import Data.Char(toLower)
-import DataStructures.Bag.SortedLinearBag
+import SortedLinearBag
+
+bolsa1 :: Bag Char
+bolsa1 = Node 'a' 2 (Node 'b' 3 (Node 'c' 2 (Node 'd'  1 Empty)))
 
 -- convertir una lista en una bolsa
 --
@@ -17,7 +20,7 @@ import DataStructures.Bag.SortedLinearBag
 -- LinearBag { 'a' 'a' 'a' 'a' 'a' 'b' 'b' 'c' 'd' 'r' 'r' }
 
 list2Bag:: Ord a => [a] -> Bag a
-list2Bag = foldr insert empty
+list2Bag = foldr insert a bolsa1
 
 -------------------------------------------------------------------------------
 -- Uso del TAD Bag a través del plegado
@@ -36,8 +39,7 @@ list2Bag = foldr insert empty
 -- [('a',5),('b',2),('c',1),('d',1),('r',2)]
 
 bag2List :: Ord a => Bag a -> [(a, Int)]
-bag2List = undefined
-
+bag2List xs = undefined
 -- Determina si contiene una bolsa a un elemento
 --
 -- BagClient> contains 'b' (list2Bag "abracadabra")

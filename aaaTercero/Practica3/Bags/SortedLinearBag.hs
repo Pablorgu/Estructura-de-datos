@@ -6,7 +6,7 @@
 --
 -------------------------------------------------------------------------------
 
-module DataStructures.Bag.SortedLinearBag
+module SortedLinearBag
   ( Bag         -- :: Bag a
   , empty       -- :: Bag a
   , isEmpty     -- :: Bag a -> Bool
@@ -216,14 +216,18 @@ intersection :: Ord a => Bag a -> Bag a -> Bag a
 intersection s Empty = s
 intersection Empty s = s
 intersection (Node x ox s) (Node y oy t) 
-   |x>
-   |x<
+   |x==y = Node x (min ox oy) (intersection s t)
+   |x<y = intersection s (Node y oy t)
+   |otherwise = intersection (Node x ox s) t
 
 difference :: Ord a => Bag a -> Bag a -> Bag a
-difference s Empty = undefined
-difference Empty s = undefined
-difference (Node x ox s) (Node y oy t) = undefined
-
+difference s Empty = s
+difference Empty s = Empty
+difference (Node x ox s) (Node y oy t) 
+   |x==y && (ox-oy)==0 = difference s t
+   |x==y && (ox-oy)>=1 =  Node x (ox-oy) (difference s t)
+   |x>y = difference s (Node y oy t)
+   |otherwise = difference (Node x ox s) t
 --------------------------------------------------------
 --------------------------------------------------------
 --------------------------------------------------------
