@@ -9,7 +9,7 @@
 module BagClient where
 
 import Data.Char(toLower)
-import SortedLinearBag
+import DataStructures.Bag.SortedLinearBag
 
 bolsa1 :: Bag Char
 bolsa1 = Node 'a' 2 (Node 'b' 3 (Node 'c' 2 (Node 'd'  1 Empty)))
@@ -20,7 +20,7 @@ bolsa1 = Node 'a' 2 (Node 'b' 3 (Node 'c' 2 (Node 'd'  1 Empty)))
 -- LinearBag { 'a' 'a' 'a' 'a' 'a' 'b' 'b' 'c' 'd' 'r' 'r' }
 
 list2Bag:: Ord a => [a] -> Bag a
-list2Bag = foldr insert a bolsa1
+list2Bag = foldr insert empty
 
 -------------------------------------------------------------------------------
 -- Uso del TAD Bag a través del plegado
@@ -39,19 +39,24 @@ list2Bag = foldr insert a bolsa1
 -- [('a',5),('b',2),('c',1),('d',1),('r',2)]
 
 bag2List :: Ord a => Bag a -> [(a, Int)]
-bag2List xs = undefined
+bag2List (Node x xs sig) = foldbag (\ x num sig ->[(x, num)] ++ sig) [] bag
 -- Determina si contiene una bolsa a un elemento
 --
 -- BagClient> contains 'b' (list2Bag "abracadabra")
 -- True
 
 contains :: Ord a => a -> Bag a -> Bool
-contains x = undefined
+contains x empty = False
+contains x (Node y ys sig) 
+    |x>y = encontrado x sig
+    |x==y = True
+    |x<y = False
 
+    
 -- número de veces que aparece el elemento que aparece más veces en una bolsa
 --
 -- ClienteBolsa> maxOcurrences (list2Bag "abracadabra")
 -- 5
 
 maxOcurrences :: Ord a => Bag a -> Int
-maxOcurrences = undefined
+maxOcurrences x = foldbag (\ _ num sig -> max num sig) 0 x
